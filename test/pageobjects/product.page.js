@@ -49,6 +49,13 @@ class ProductPage extends Page {
     return $$(".goods-tile__price-value");
   }
 
+  // sorting elements
+  get sortButton() {
+    return $(".catalog-settings__sorting select");
+  }
+  get sortedByCheapest() {
+    return $('option[value="1: cheap"]');
+  }
   // product details elements
   get buyButton() {
     return $(".buy-button__label");
@@ -88,6 +95,22 @@ class ProductPage extends Page {
     );
     const prices = texts.map((el) => +el.replace(/\D/g, ""));
     return prices.every((el) => +el >= startPrice && +el <= endPrice);
+  }
+
+  async isPriceSortedASCOrder() {
+    const elements = await this.priceList;
+    const texts = await Promise.all(
+      elements.map(async (element) => {
+        return await element.getText();
+      })
+    );
+    const prices = texts.map((el) => +el.replace(/\D/g, ""));
+    for (let i = 0; i < prices.length - 1; i++) {
+      if (prices[i] > prices[i + 1]) {
+        return false; // Elements are not in ascending order
+      }
+    }
+    return true;
   }
 
   async searchForItem(query) {

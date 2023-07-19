@@ -1,6 +1,7 @@
 import { config as dotenvfile } from "dotenv";
 dotenvfile();
 
+import allureReporter from "@wdio/allure-reporter";
 
 export const config = {
   //
@@ -65,7 +66,7 @@ export const config = {
   // Define all options that are relevant for the WebdriverIO instance here
   //
   // Level of logging verbosity: trace | debug | info | warn | error | silent
-  logLevel: "info",
+  logLevel: "silent",
   //
   // Set specific log levels per logger
   // loggers:
@@ -248,31 +249,17 @@ export const config = {
    * @param {boolean} result.passed    true if test has passed, otherwise false
    * @param {object}  result.retries   informations to spec related retries, e.g. `{ attempts: 0, limit: 0 }`
    */
-  afterTest: function (
-    test,
-    context,
-    { error, result, duration, passed, retries }
-  ) {
-    if (passed) {
-      browser.takeScreenshot();
+  afterStep: async function (step) {
+    if (step.error) {
+      const screenshotPath = `./allure-results/screenshots/${Date.now()}.png`;
+      await browser.saveScreenshot(screenshotPath);
+      allureReporter.addAttachment(
+        "Screenshot",
+        Buffer.from(browser.takeScreenshot(), "base64"),
+        "image/png"
+      );
     }
   },
-  //   afterTest: async function (
-  //     test,
-  //     context,
-  //     { error, result, duration, passed, retries }
-  //   ) {
-  //     if (passed) {
-  //       await browser.takeScreenshot();
-  //       browser.executeScript(
-  //         'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed","reason": "Assertions passed"}}'
-  //       );
-  //     } else {
-  //       browser.executeScript(
-  //         'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed","reason": "At least 1 assertion failed"}}'
-  //       );
-  //     }
-  //   },
 
   /**
    * Hook that gets executed after the suite has ended
