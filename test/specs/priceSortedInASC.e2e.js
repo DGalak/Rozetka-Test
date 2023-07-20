@@ -11,7 +11,6 @@ describe("Verify that user can see products sorted from the cheapest to the most
     );
     // select first category and subcategory
     await ProductPage.selectCategory(0);
-    await browser.debug();
     await browser.pause(2000);
     await ProductPage.selectSubCategory(0);
     await ProductPage.sortButton.click();
