@@ -33,6 +33,9 @@ class ProductPage extends Page {
   get categoriesList() {
     return $$(".sidebar .menu-categories__link");
   }
+  get brandsList() {
+    return $$(".portal-brands__item");
+  }
   get subcategoriesList() {
     return $$(".tile-cats__heading");
   }
@@ -74,8 +77,9 @@ class ProductPage extends Page {
     await categories[index].click();
   }
   async selectSubCategory(index) {
+    const brands = await this.brandsList;
     const subCategories = await this.subcategoriesList;
-    await subCategories[index].scrollIntoView();
+    await brands[index].scrollIntoView();
     await subCategories[index].click();
   }
   async fillInPriceInputs(startPrice, endPrice) {
