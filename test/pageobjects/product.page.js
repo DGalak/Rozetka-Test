@@ -70,7 +70,6 @@ class ProductPage extends Page {
 
   async open() {
     await super.open();
-    await browser.pause(1000);
   }
   async selectCategory(index) {
     const categories = await this.categoriesList;
@@ -87,7 +86,6 @@ class ProductPage extends Page {
     await (await this.priceInputList)[0].setValue(startPrice);
     await (await this.priceInputList)[1].clearValue();
     await (await this.priceInputList)[1].setValue(endPrice);
-    await browser.pause(2000);
     await this.confirmPriceButton.click();
   }
   async isPriceWithinFilters(startPrice, endPrice) {
@@ -120,7 +118,6 @@ class ProductPage extends Page {
   async searchForItem(query) {
     await this.searchInput.setValue(query);
     await this.findBySearchButton.click();
-    await browser.pause(6000);
   }
   async isProductsSearchedByQuery(query) {
     const elements = await this.searchedProductsList;
