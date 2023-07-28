@@ -11,12 +11,9 @@ describe("Verify that user can see products sorted from the cheapest to the most
     );
     // select first category and subcategory
     await ProductPage.selectCategory(0);
-    await browser.pause(2000);
     await ProductPage.selectSubCategory(0);
     await ProductPage.sortButton.click();
-    await browser.pause(2000);
     await ProductPage.sortedByCheapest.click();
-    await browser.pause(2000);
     expect(await ProductPage.isPriceSortedASCOrder()).toBeTrue();
   });
 });
